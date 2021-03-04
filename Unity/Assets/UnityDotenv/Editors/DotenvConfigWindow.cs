@@ -10,14 +10,16 @@ namespace UnityDotenv
     public class DotenvConfigWindow : EditorWindow
     {
         private Vector2 scrollPos = Vector2.zero;
+        private bool foldoutEnvConfigSettings = true;
         private bool foldoutEnvDataSettings = true;
-        private bool isPreloadDotenv = true;
+        private int showLoadDebugDotenv;
         private Dictionary<string, string> envValuPair = new Dictionary<string, string>();
         private string dotenvFilePath = ".env";
 
         void OnEnable()
         {
             envValuPair = Env.Load(DotenvFile.FileFullPath).ToDictionary();
+            showLoadDebugDotenv = PlayerPrefs.GetInt(DebuggerConst.ShowLoadDebugDotenvKey, 1);
         }
 
         [MenuItem("Tools/Dotenv Config")]
@@ -30,11 +32,15 @@ namespace UnityDotenv
         void OnGUI()
         {
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-            WithInFoldoutBlock(".env config", ref foldoutEnvDataSettings, () =>
+            WithInFoldoutBlock(".env config", ref foldoutEnvConfigSettings, () =>
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("show log when load .env file.");
-                isPreloadDotenv = EditorGUILayout.Toggle(isPreloadDotenv);
+                int newShowLoadDebugDotenv = EditorGUILayout.Toggle("LocalStorage", PlayerPrefs.GetInt(DebuggerConst.ShowLoadDebugDotenvKey, showLoadDebugDotenv) == 1) ? 1 : 0;
+                if (showLoadDebugDotenv != newShowLoadDebugDotenv)
+                {
+                    PlayerPrefs.SetInt(DebuggerConst.ShowLoadDebugDotenvKey, showLoadDebugDotenv = newShowLoadDebugDotenv);
+                }
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.Space();
                 EditorGUILayout.BeginHorizontal();
