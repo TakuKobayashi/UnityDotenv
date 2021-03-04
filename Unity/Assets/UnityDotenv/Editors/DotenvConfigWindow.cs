@@ -17,7 +17,7 @@ namespace UnityDotenv
 
         void OnEnable()
         {
-            envValuPair = Env.Load(EnvPreloader.EnvFilePath).ToDictionary();
+            envValuPair = Env.Load(DotenvFile.FileFullPath).ToDictionary();
         }
 
         [MenuItem("Tools/Dotenv Config")]
@@ -30,27 +30,61 @@ namespace UnityDotenv
         void OnGUI()
         {
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(".env file path");
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(Application.streamingAssetsPath);
-            string newDotenvFilePath = EditorGUILayout.TextField(dotenvFilePath);
-            if(dotenvFilePath != newDotenvFilePath)
+            WithInFoldoutBlock(".env config", ref foldoutEnvDataSettings, () =>
             {
-                dotenvFilePath = newDotenvFilePath;
-            }
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.Space();
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("preload .env file.");
-            isPreloadDotenv = EditorGUILayout.Toggle(isPreloadDotenv);
-            EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("show log when load .env file.");
+                isPreloadDotenv = EditorGUILayout.Toggle(isPreloadDotenv);
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.Space();
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(".env file path");
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(Application.streamingAssetsPath);
+                EditorGUILayout.LabelField(dotenvFilePath);
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.Space();
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Open"))
+                {
+                    EditorUtility.RevealInFinder(DotenvFile.FileFullPath);
+                }
+                EditorGUILayout.EndHorizontal();
+            });
 
             WithInFoldoutBlock(".env data params", ref foldoutEnvDataSettings, () =>
             {
                 EditorGUILayout.BeginHorizontal();
-                for(int i = 0;i < 5; ++i)
+                EditorGUILayout.LabelField("Key Name");
+                EditorGUILayout.LabelField("Value");
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.Space();
+                Dictionary<string, string> tmpKV = envValuPair.ToDictionary();
+                foreach (var kv in tmpKV)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    string newKey = EditorGUILayout.TextField(kv.Key);
+                    if(kv.Key != newKey)
+                    {
+                        string tmpValue = envValuPair[kv.Key];
+                        envValuPair.Remove(kv.Key);
+                        envValuPair.Add(newKey, tmpValue);
+                    }
+                    string newValue = EditorGUILayout.TextField(kv.Value);
+                    if (kv.Value != newValue)
+                    {
+                        envValuPair[kv.Key] = newValue;
+                    }
+                    if (GUILayout.Button("Delete"))
+                    {
+                        envValuPair.Remove(kv.Key);
+                    }
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.Space();
+                }
+                EditorGUILayout.BeginHorizontal();
+                for (int i = 0; i < 5; ++i)
                 {
                     EditorGUILayout.Space();
                 }
@@ -63,21 +97,9 @@ namespace UnityDotenv
                 }
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.Space();
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Key Name");
-                EditorGUILayout.LabelField("Value");
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.Space();
-                foreach (var kv in envValuPair)
-                {
-                    EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.TextField(kv.Key);
-                    EditorGUILayout.TextField(kv.Value);
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.Space();
-                }
                 if (GUILayout.Button("Save"))
                 {
+                    DotenvFile.WriteDotenvFile(envValuPair);
                 }
             });
 
