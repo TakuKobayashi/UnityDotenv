@@ -11,8 +11,7 @@ namespace UnityDotenv
         // Start is called before the first frame update
         void Start()
         {
-            Debug.Log(Application.streamingAssetsPath + "/.env");
-            IEnumerable<KeyValuePair<string, string>> envValuePaur = Env.Load(Application.streamingAssetsPath + "/.env");
+            IEnumerable<KeyValuePair<string, string>> envValuePaur = Env.Load(DotenvFile.FileFullPath);
             foreach (KeyValuePair<string, string> kvp in envValuePaur)
             {
                 Debug.Log(kvp.Key + ":" + kvp.Value);
