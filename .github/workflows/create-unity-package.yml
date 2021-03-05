@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: |
-        find ./Unity/Assets/UnityDotenv/ -not -name '*.json' -not -name '*.json.meta' >> metaList
+        find -path "./Unity/Assets/UnityDotenv/*" -not -name '*.json' -not -name '*.json.meta' >> metaList
         cat metaList
     - uses: pCYSl5EDgo/create-unitypackage@master
       with:
