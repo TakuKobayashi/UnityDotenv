@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 using System.IO;
 using System.Collections.Generic;
-
+using DotNetEnv;
 
 namespace UnityDotenv
 {

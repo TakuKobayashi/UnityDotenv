@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
+using DotNetEnv;
 
 namespace UnityDotenv
 {

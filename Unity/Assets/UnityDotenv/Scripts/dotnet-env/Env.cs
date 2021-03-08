@@ -1,18 +1,17 @@
-﻿
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace UnityDotenv
+namespace DotNetEnv
 {
     public class Env
     {
         public const string DEFAULT_ENVFILENAME = ".env";
 
-        public static IEnumerable<KeyValuePair<string, string>> LoadMulti(string[] paths, LoadOptions options = null)
+        public static IEnumerable<KeyValuePair<string, string>> LoadMulti (string[] paths, LoadOptions options = null)
         {
             return paths.Aggregate(
                 Enumerable.Empty<KeyValuePair<string, string>>(),
@@ -20,7 +19,7 @@ namespace UnityDotenv
             );
         }
 
-        public static IEnumerable<KeyValuePair<string, string>> Load(string path = null, LoadOptions options = null)
+        public static IEnumerable<KeyValuePair<string, string>> Load (string path = null, LoadOptions options = null)
         {
             if (options == null) options = LoadOptions.DEFAULT;
 
@@ -57,7 +56,7 @@ namespace UnityDotenv
             return LoadContents(File.ReadAllText(path), options);
         }
 
-        public static IEnumerable<KeyValuePair<string, string>> Load(Stream file, LoadOptions options = null)
+        public static IEnumerable<KeyValuePair<string, string>> Load (Stream file, LoadOptions options = null)
         {
             using (var reader = new StreamReader(file))
             {
@@ -65,7 +64,7 @@ namespace UnityDotenv
             }
         }
 
-        public static IEnumerable<KeyValuePair<string, string>> LoadContents(string contents, LoadOptions options = null)
+        public static IEnumerable<KeyValuePair<string, string>> LoadContents (string contents, LoadOptions options = null)
         {
             if (options == null) options = LoadOptions.DEFAULT;
 
@@ -86,26 +85,26 @@ namespace UnityDotenv
             }
         }
 
-        public static string GetString(string key, string fallback = default(string)) =>
+        public static string GetString (string key, string fallback = default(string)) =>
             Environment.GetEnvironmentVariable(key) ?? fallback;
 
-        public static bool GetBool(string key, bool fallback = default(bool)) =>
+        public static bool GetBool (string key, bool fallback = default(bool)) =>
             bool.TryParse(Environment.GetEnvironmentVariable(key), out var value) ? value : fallback;
 
-        public static int GetInt(string key, int fallback = default(int)) =>
+        public static int GetInt (string key, int fallback = default(int)) =>
             int.TryParse(Environment.GetEnvironmentVariable(key), out var value) ? value : fallback;
 
-        public static double GetDouble(string key, double fallback = default(double)) =>
+        public static double GetDouble (string key, double fallback = default(double)) =>
             double.TryParse(Environment.GetEnvironmentVariable(key), NumberStyles.Any, CultureInfo.InvariantCulture, out var value) ? value : fallback;
 
-        public static LoadOptions NoEnvVars() => LoadOptions.NoEnvVars();
-        public static LoadOptions NoClobber() => LoadOptions.NoClobber();
-        public static LoadOptions TraversePath() => LoadOptions.TraversePath();
+        public static LoadOptions NoEnvVars () => LoadOptions.NoEnvVars();
+        public static LoadOptions NoClobber () => LoadOptions.NoClobber();
+        public static LoadOptions TraversePath () => LoadOptions.TraversePath();
     }
 
     public static class Extensions
     {
-        public static Dictionary<string, string> ToDictionary(this IEnumerable<KeyValuePair<string, string>> kvps) =>
+        public static Dictionary<string, string> ToDictionary (this IEnumerable<KeyValuePair<string, string>> kvps) =>
             kvps.GroupBy(kv => kv.Key).ToDictionary(g => g.Key, g => g.Last().Value);
     }
 }
