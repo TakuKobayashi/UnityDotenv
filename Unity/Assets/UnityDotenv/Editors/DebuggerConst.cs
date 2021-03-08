@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace UnityDotenv
+﻿namespace UnityDotenv
 {
     public class DebuggerConst
     {
