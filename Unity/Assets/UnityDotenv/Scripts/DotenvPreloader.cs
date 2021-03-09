@@ -12,7 +12,7 @@ namespace UnityDotenv
         {
             IEnumerable<KeyValuePair<string, string>> envValuePaur = Env.Load(DotenvFile.FileFullPath);
 #if UNITY_EDITOR
-            if (PlayerPrefs.GetInt(DebuggerConst.ShowLoadDebugDotenvKey, 1) == 1)
+            if (PlayerPrefs.GetInt(Const.ShowLoadDebugDotenvKey, 1) == 1)
             {
                 List<string> kvList = new List<string>();
                 foreach (KeyValuePair<string, string> kvp in envValuePaur)

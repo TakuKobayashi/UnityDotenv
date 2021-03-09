@@ -18,7 +18,7 @@ namespace UnityDotenv
         void OnEnable()
         {
             envValuPair = Env.Load(DotenvFile.FileFullPath).ToDictionary();
-            showLoadDebugDotenv = PlayerPrefs.GetInt(DebuggerConst.ShowLoadDebugDotenvKey, 1);
+            showLoadDebugDotenv = PlayerPrefs.GetInt(Const.ShowLoadDebugDotenvKey, 1);
         }
 
         [MenuItem("Tools/Dotenv Config")]
@@ -35,10 +35,10 @@ namespace UnityDotenv
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("show log when load .env file.");
-                int newShowLoadDebugDotenv = EditorGUILayout.Toggle("LocalStorage", PlayerPrefs.GetInt(DebuggerConst.ShowLoadDebugDotenvKey, showLoadDebugDotenv) == 1) ? 1 : 0;
+                int newShowLoadDebugDotenv = EditorGUILayout.Toggle("LocalStorage", PlayerPrefs.GetInt(Const.ShowLoadDebugDotenvKey, showLoadDebugDotenv) == 1) ? 1 : 0;
                 if (showLoadDebugDotenv != newShowLoadDebugDotenv)
                 {
-                    PlayerPrefs.SetInt(DebuggerConst.ShowLoadDebugDotenvKey, showLoadDebugDotenv = newShowLoadDebugDotenv);
+                    PlayerPrefs.SetInt(Const.ShowLoadDebugDotenvKey, showLoadDebugDotenv = newShowLoadDebugDotenv);
                 }
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.Space();

@@ -1,6 +1,6 @@
 ﻿namespace UnityDotenv
 {
-    public class DebuggerConst
+    public class Const
     {
         public const string ShowLoadDebugDotenvKey = "UnityDotenvShowLoadDebugDotenvKey";
     }
