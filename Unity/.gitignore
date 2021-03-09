@@ -74,6 +74,8 @@ Library_Android
 # Log
 *.log
 
+!*.meta
+
 # PackageManager
 Packages/
 !Packages/manifest.json
